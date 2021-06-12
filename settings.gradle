@@ -3,5 +3,6 @@ rootProject.name = 'gianreferrals'
 include(
         "core",
         "bukkit",
-        "bungee"
+        "bungee",
+        ":sample:bukkit-plugin"
 )

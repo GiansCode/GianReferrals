@@ -2,5 +2,6 @@
 .gradle/
 build/
 out/
-server/
+servers/
 *.iml
+sample/bukkit-plugin/src/main/resources/private

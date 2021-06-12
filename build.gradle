@@ -14,5 +14,15 @@ allprojects {
 
     repositories {
         mavenCentral()
+        maven {
+            url = 'https://repo.aikar.co/content/groups/aikar'
+        }
+        maven {
+            url = 'https://jitpack.io'
+        }
+    }
+
+    dependencies {
+        compileOnly "org.jetbrains:annotations:21.0.1"
     }
 }

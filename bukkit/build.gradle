@@ -1,0 +1,6 @@
+apply from: "https://cdn.piggypiglet.me/gradle/spigot.gradle"
+
+dependencies {
+    api project(":core")
+    spigot "1.17-R0.1"
+}

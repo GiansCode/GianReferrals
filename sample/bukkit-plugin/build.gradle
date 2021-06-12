@@ -1,0 +1,10 @@
+apply from: "https://cdn.piggypiglet.me/gradle/spigot.gradle"
+
+dependencies {
+    implementation project(":bukkit")
+    spigot "1.17-R0.1"
+}
+
+shadowJar {
+    destinationDirectory = file("../servers/bukkit/plugins")
+}
