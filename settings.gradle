@@ -1,4 +1,4 @@
-rootProject.name = 'gianreferrals'
+rootProject.name = 'referrals'
 
 include(
         "core",

@@ -1,16 +1,23 @@
 package me.piggypiglet.sample;
 
-import com.google.common.collect.Streams;
 import com.google.common.io.CharStreams;
-import me.piggypiglet.gianreferrals.bootstrap.GianReferralsBootstrap;
-import me.piggypiglet.gianreferrals.config.Config;
-import me.piggypiglet.gianreferrals.config.MysqlDetails;
+import me.piggypiglet.referrals.api.Referrals;
+import me.piggypiglet.referrals.bootstrap.ReferralsBootstrap;
+import me.piggypiglet.referrals.config.Config;
+import me.piggypiglet.referrals.config.MysqlDetails;
+import me.piggypiglet.referrals.config.expire.ExpirationPolicy;
+import me.piggypiglet.referrals.config.expire.ExpiryOptions;
+import org.bukkit.Bukkit;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.util.concurrent.TimeUnit;
 
 // ------------------------------
 // Copyright (c) PiggyPiglet 2021
@@ -32,7 +39,7 @@ public final class SamplePlugin extends JavaPlugin {
         final Config config = Config.builder()
                 .apiKey(apiKey)
                 .ip("127.0.0.1")
-                .domain("test.p1g.pw")
+                .domain("p1g.pw")
                 .zone("p1g.pw")
                 .mysql(MysqlDetails.builder()
                         .host("127.0.0.1")
@@ -43,7 +50,25 @@ public final class SamplePlugin extends JavaPlugin {
                         .poolSize(10)
                         .port(3306)
                         .build())
+                .expiry(ExpiryOptions.builder()
+                        .expire(true)
+                        .policy(ExpirationPolicy.ACCESSED)
+                        .expiryCheckPeriodMinutes(1)
+                        .expiryMinutes(/*TimeUnit.DAYS.toMinutes(30)*/1)
+                        .build())
                 .build();
-        GianReferralsBootstrap.initialize(config, this);
+        ReferralsBootstrap.initialize(config, this);
+
+        getCommand("test").setExecutor(this);
+    }
+
+    @Override
+    public boolean onCommand(@NotNull final CommandSender sender, @NotNull final Command command,
+                             @NotNull final String label, @NotNull final String[] args) {
+        final Player player = (Player) sender;
+        final Referrals api = Bukkit.getServicesManager().load(Referrals.class);
+        api.createRecord(player.getUniqueId(), player.getName());
+
+        return true;
     }
 }

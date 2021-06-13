@@ -1,3 +1,5 @@
 name: SamplePlugin
 main: me.piggypiglet.sample.SamplePlugin
 version: 1.0.0
+commands:
+  test: {}
