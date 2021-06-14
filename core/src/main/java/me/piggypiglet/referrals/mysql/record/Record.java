@@ -67,13 +67,13 @@ public final class Record {
     public boolean equals(final Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        final Record record1 = (Record) o;
-        return joins == record1.joins && uuid.equals(record1.uuid) && record.equals(record1.record) && cloudflareIdentifier.equals(record1.cloudflareIdentifier) && expiryInstant.equals(record1.expiryInstant);
+        final Record record = (Record) o;
+        return uuid.equals(record.uuid);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(uuid, record, cloudflareIdentifier, expiryInstant, joins);
+        return Objects.hash(uuid);
     }
 
     @NotNull

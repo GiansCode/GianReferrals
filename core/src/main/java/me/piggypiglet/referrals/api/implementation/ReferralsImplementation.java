@@ -70,10 +70,7 @@ public final class ReferralsImplementation implements Referrals {
     @Override
     public void deleteRecord(final @NotNull UUID uuid) {
         findRecord(uuid).ifPresent(record -> {
-            System.out.println(records);
-            System.out.println(record);
-            records.remove(record); //todo: what is going on here
-            System.out.println(records);
+            records.remove(record);
 
             task.async(() -> {
                 cloudflareManager.deleteRecord(record.cloudflareIdentifier());
