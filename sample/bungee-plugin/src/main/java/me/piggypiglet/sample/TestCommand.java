@@ -14,7 +14,7 @@ public final class TestCommand extends Command {
     private final Referrals api;
 
     public TestCommand(@NotNull final Referrals api) {
-        super("test");
+        super("gtest");
         this.api = api;
     }
 
