@@ -1,8 +1,8 @@
-package me.piggypiglet.referrals.bukkit.logging;
+package me.piggypiglet.referrals.bungee.logging;
 
 import com.google.inject.Inject;
 import me.piggypiglet.referrals.logging.Logger;
-import org.bukkit.plugin.java.JavaPlugin;
+import net.md_5.bungee.api.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.logging.Level;
@@ -11,31 +11,31 @@ import java.util.logging.Level;
 // Copyright (c) PiggyPiglet 2021
 // https://www.piggypiglet.me
 // ------------------------------
-public final class BukkitLogger implements Logger {
-    private final java.util.logging.Logger handle;
+public final class BungeeLogger implements Logger {
+    private final java.util.logging.Logger logger;
 
     @Inject
-    public BukkitLogger(@NotNull final JavaPlugin main) {
-        handle = main.getLogger();
+    public BungeeLogger(@NotNull final Plugin main) {
+        this.logger = main.getLogger();
     }
 
     @Override
     public void info(final @NotNull String message) {
-        handle.info(message);
+        logger.info(message);
     }
 
     @Override
     public void warn(final @NotNull String message) {
-        handle.warning(message);
+        logger.warning(message);
     }
 
     @Override
     public void error(final @NotNull String message) {
-        handle.severe(message);
+        logger.severe(message);
     }
 
     @Override
     public void error(final @NotNull String message, final @NotNull Throwable throwable) {
-        handle.log(Level.SEVERE, message, throwable);
+        logger.log(Level.SEVERE, message, throwable);
     }
 }

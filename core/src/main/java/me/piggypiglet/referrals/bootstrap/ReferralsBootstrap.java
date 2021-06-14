@@ -3,6 +3,7 @@ package me.piggypiglet.referrals.bootstrap;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.Key;
+import me.piggypiglet.referrals.api.Referrals;
 import me.piggypiglet.referrals.api.implementation.platform.registerables.PlatformReferralsImplementationRegisterable;
 import me.piggypiglet.referrals.bootstrap.framework.Registerable;
 import me.piggypiglet.referrals.cloudflare.registerables.CloudflareRegisterable;
@@ -67,7 +68,7 @@ public abstract class ReferralsBootstrap {
     @NotNull
     protected abstract Key<?> provideMainKey();
 
-    public static <T> void initialize(@NotNull final Config config, @NotNull final T main) {
+    public static <T> Referrals initialize(@NotNull final Config config, @NotNull final T main) {
         final Scanner scanner = ZISScanner.create(MAIN_CLASS, PACKAGE);
 
         final ReferralsBootstrap bootstrap = scanner.getClasses(Rules.builder().typeExtends(MAIN_CLASS).disallowMutableClasses().build())
@@ -95,5 +96,7 @@ public abstract class ReferralsBootstrap {
                     .map(injector.get()::createChildInjector)
                     .ifPresent(injector::set);
         }
+
+        return injector.get().getInstance(Referrals.class);
     }
 }

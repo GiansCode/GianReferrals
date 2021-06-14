@@ -7,10 +7,7 @@ import me.piggypiglet.referrals.config.Config;
 import me.piggypiglet.referrals.config.MysqlDetails;
 import me.piggypiglet.referrals.config.expire.ExpirationPolicy;
 import me.piggypiglet.referrals.config.expire.ExpiryOptions;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-import org.bukkit.plugin.java.JavaPlugin;
+import net.md_5.bungee.api.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
@@ -21,7 +18,7 @@ import java.io.Reader;
 // Copyright (c) PiggyPiglet 2021
 // https://www.piggypiglet.me
 // ------------------------------
-public final class SamplePlugin extends JavaPlugin {
+public final class SamplePlugin extends Plugin {
     private final String apiKey;
 
     {
@@ -31,8 +28,6 @@ public final class SamplePlugin extends JavaPlugin {
             throw new RuntimeException(exception);
         }
     }
-
-    private Referrals api;
 
     @Override
     public void onEnable() {
@@ -46,7 +41,7 @@ public final class SamplePlugin extends JavaPlugin {
                         .username("referrals")
                         .password("test1234")
                         .database("referrals")
-                        .tablePrefix("bukkit_")
+                        .tablePrefix("bungee_")
                         .poolSize(10)
                         .port(3306)
                         .build())
@@ -57,17 +52,8 @@ public final class SamplePlugin extends JavaPlugin {
                         .expiryMinutes(/*TimeUnit.DAYS.toMinutes(30)*/1)
                         .build())
                 .build();
-        api = ReferralsBootstrap.initialize(config, this);
+        final Referrals api = ReferralsBootstrap.initialize(config, this);
 
-        getCommand("test").setExecutor(this);
-    }
-
-    @Override
-    public boolean onCommand(@NotNull final CommandSender sender, @NotNull final Command command,
-                             @NotNull final String label, @NotNull final String[] args) {
-        final Player player = (Player) sender;
-        api.createRecord(player.getUniqueId(), player.getName());
-
-        return true;
+        getProxy().getPluginManager().registerCommand(this, new TestCommand(api));
     }
 }

@@ -1,4 +1,4 @@
-package me.piggypiglet.referrals.bukkit.listener;
+package me.piggypiglet.referrals.bukkit.login;
 
 import com.google.inject.Inject;
 import me.piggypiglet.referrals.api.Referrals;

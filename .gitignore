@@ -5,3 +5,4 @@ out/
 servers/
 *.iml
 sample/bukkit-plugin/src/main/resources/private
+sample/bungee-plugin/src/main/resources/private
