@@ -69,8 +69,8 @@ public abstract class Registerable {
         staticInjections.addAll(Arrays.asList(classes));
     }
 
-    protected void haltBootstrap(@NotNull final String reason) {
-        halt = new BootstrapHaltException(reason);
+    protected void haltBootstrap(@NotNull final String reason, @NotNull final Object... variables) {
+        halt = new BootstrapHaltException(String.format(reason, variables));
     }
 
     @NotNull

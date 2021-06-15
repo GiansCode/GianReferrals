@@ -44,9 +44,9 @@ public final class ExpiryRegisterable extends Registerable {
 
             for (final Record record : new HashSet<>(records)) {
                 if (record.expiryInstant().isBefore(now)) {
-                    task.sync(() -> api.deleteRecord(record.uuid()));
+                    api.deleteRecord(record.uuid());
                 }
             }
-        }, 0, TimeUnit.MINUTES.toSeconds(expiry.expiryCheckPeriodMinutes()) * 20);
+        }, 0, expiry.expiryCheckPeriodMinutes());
     }
 }

@@ -22,9 +22,13 @@ public final class PlatformReferralsImplementationRegisterable extends Registera
 
     @Override
     public void execute(final @NotNull Injector injector) {
-        addBinding(PlatformReferrals.class, scanner.getClasses(Rules.builder().typeExtends(PlatformReferrals.class).disallowMutableClasses().build())
+        scanner.getClasses(Rules.builder().typeExtends(PlatformReferrals.class).disallowMutableClasses().build())
                 .map(injector::getInstance)
                 .map(PlatformReferrals.class::cast)
-                .findAny().orElseThrow(() -> new AssertionError("Could not find PlatformReferrals implementation.")));
+                .findAny()
+                .ifPresentOrElse(
+                        referrals -> addBinding(PlatformReferrals.class, referrals),
+                        () -> haltBootstrap("Could not find implementation for PlatformReferrals.")
+                );
     }
 }

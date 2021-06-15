@@ -7,6 +7,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitScheduler;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.concurrent.TimeUnit;
+
 // ------------------------------
 // Copyright (c) PiggyPiglet 2021
 // https://www.piggypiglet.me
@@ -28,11 +30,15 @@ public final class BukkitTask implements Task {
 
     @Override
     public void async(final @NotNull Runnable task, final long delay, final long period) {
-        SCHEDULER.runTaskTimerAsynchronously(main, task, delay, period);
+        SCHEDULER.runTaskTimerAsynchronously(main, task, toTicks(delay), toTicks(period));
     }
 
     @Override
     public void sync(final @NotNull Runnable task) {
         SCHEDULER.runTask(main, task);
+    }
+
+    private static long toTicks(final long minutes) {
+        return TimeUnit.MINUTES.toSeconds(minutes) * 20;
     }
 }

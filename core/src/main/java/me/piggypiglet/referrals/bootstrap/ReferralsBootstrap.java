@@ -69,7 +69,14 @@ public abstract class ReferralsBootstrap {
     @NotNull
     protected abstract Key<?> provideMainKey();
 
-    public static <T> Referrals initialize(@NotNull final Config config, @NotNull final T main) {
+    /**
+     * Initialize the API (connect to MySQL, cloudflare, etc).
+     *
+     * @param config Populated config instance, see {@link Config#builder}.
+     * @param main Your main instance (JavaPlugin, Plugin, etc)
+     * @return Referrals API instance
+     */
+    public static Referrals initialize(@NotNull final Config config, @NotNull final Object main) {
         final Scanner scanner = ZISScanner.create(MAIN_CLASS, PACKAGE);
 
         final ReferralsBootstrap bootstrap = scanner.getClasses(Rules.builder().typeExtends(MAIN_CLASS).disallowMutableClasses().build())

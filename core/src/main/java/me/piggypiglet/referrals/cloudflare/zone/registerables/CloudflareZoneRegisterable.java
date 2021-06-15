@@ -53,16 +53,14 @@ public final class CloudflareZoneRegisterable extends Registerable {
                                 .findAny()
                                 .ifPresentOrElse(
                                         zoneId -> addBinding(String.class, Names.named("zone"), zoneId),
-                                        () -> {
-                                            throw new UnknownZoneException("Couldn't find zone with name: " + config.zone());
-                                        }
+                                        () -> haltBootstrap("Couldn't find zone with name: %s", config.zone())
                                 );
                     }
 
                     @Override
                     public void onFailure(@NotNull final Throwable t, final int statusCode,
                                           @NotNull final String statusMessage, @NotNull final Map<Integer, String> errors) {
-                        haltBootstrap("Something went wrong when retrieving zones: " + errors);
+                        haltBootstrap("Something went wrong when retrieving zones: %s", errors);
                     }
                 }, Zone.class);
     }

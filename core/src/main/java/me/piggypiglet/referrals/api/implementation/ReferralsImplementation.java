@@ -76,7 +76,7 @@ public final class ReferralsImplementation implements Referrals {
 
     @Override
     public void deleteRecord(final @NotNull UUID uuid) {
-        findRecord(uuid).ifPresent(record -> {
+        task.sync(() -> findRecord(uuid).ifPresent(record -> {
             records.remove(record);
 
             task.async(() -> {
@@ -86,7 +86,7 @@ public final class ReferralsImplementation implements Referrals {
 
             final ImmutableRecord immutableRecord = makeImmutable(record);
             platformReferrals.fire(PlatformEvent.RECORD_DELETE, immutableRecord, immutableRecord);
-        });
+        }));
     }
 
     @Override
@@ -113,7 +113,7 @@ public final class ReferralsImplementation implements Referrals {
 
     private void setReferrals(@NotNull final UUID uuid, @NotNull final Function<Record, Integer> referrals,
                               @NotNull final PlatformEvent event) {
-        findRecord(uuid).ifPresent(record -> {
+        task.sync(() -> findRecord(uuid).ifPresent(record -> {
             final ImmutableRecord original = makeImmutable(record);
             record.joins(referrals.apply(record));
 
@@ -123,7 +123,7 @@ public final class ReferralsImplementation implements Referrals {
 
             task.async(() -> database.save(record));
             platformReferrals.fire(event, original, makeImmutable(record));
-        });
+        }));
     }
 
     @NotNull

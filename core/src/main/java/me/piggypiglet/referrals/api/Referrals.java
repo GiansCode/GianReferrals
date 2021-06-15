@@ -12,11 +12,6 @@ import java.util.concurrent.CompletableFuture;
 // Copyright (c) PiggyPiglet 2021
 // https://www.piggypiglet.me
 // ------------------------------
-
-/**
- * Referrals API, please only interact with these methods synchronously. The
- * API will do heavy operations asynchronously on its own.
- */
 @ImplementedBy(ReferralsImplementation.class)
 public interface Referrals {
     /**
