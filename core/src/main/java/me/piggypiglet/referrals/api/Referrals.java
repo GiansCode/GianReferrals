@@ -33,8 +33,10 @@ public interface Referrals {
      * and cloudflare.
      *
      * @param uuid Player UUID
+     * @return CompletableFuture to signal completeness
      */
-    void deleteRecord(@NotNull final UUID uuid);
+    @NotNull
+    CompletableFuture<Void> deleteRecord(@NotNull final UUID uuid);
 
     /**
      * Get the total referrals a player has made. Will return -1 if the

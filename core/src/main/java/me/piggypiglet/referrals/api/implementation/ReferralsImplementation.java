@@ -74,19 +74,25 @@ public final class ReferralsImplementation implements Referrals {
         return result;
     }
 
+    @NotNull
     @Override
-    public void deleteRecord(final @NotNull UUID uuid) {
+    public CompletableFuture<Void> deleteRecord(final @NotNull UUID uuid) {
+        final CompletableFuture<Void> result = new CompletableFuture<>();
+
         task.sync(() -> findRecord(uuid).ifPresent(record -> {
             records.remove(record);
+
+            final ImmutableRecord immutableRecord = makeImmutable(record);
+            platformReferrals.fire(PlatformEvent.RECORD_DELETE, immutableRecord, immutableRecord);
 
             task.async(() -> {
                 cloudflareManager.deleteRecord(record.cloudflareIdentifier());
                 database.delete(record);
+                result.complete(null);
             });
-
-            final ImmutableRecord immutableRecord = makeImmutable(record);
-            platformReferrals.fire(PlatformEvent.RECORD_DELETE, immutableRecord, immutableRecord);
         }));
+
+        return result;
     }
 
     @Override
