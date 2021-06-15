@@ -3,9 +3,11 @@ package me.piggypiglet.referrals.bootstrap.framework;
 import com.google.inject.Injector;
 import com.google.inject.Key;
 import com.google.inject.TypeLiteral;
+import me.piggypiglet.referrals.bootstrap.exceptions.BootstrapHaltException;
 import me.piggypiglet.referrals.guice.modules.DynamicModule;
 import me.piggypiglet.referrals.guice.objects.Binding;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.lang.annotation.Annotation;
 import java.util.Arrays;
@@ -20,6 +22,7 @@ import java.util.Set;
 public abstract class Registerable {
     private final Set<Binding<?>> bindings = new HashSet<>();
     private final Set<Class<?>> staticInjections = new HashSet<>();
+    private BootstrapHaltException halt = null;
 
     public void execute() {}
 
@@ -66,6 +69,10 @@ public abstract class Registerable {
         staticInjections.addAll(Arrays.asList(classes));
     }
 
+    protected void haltBootstrap(@NotNull final String reason) {
+        halt = new BootstrapHaltException(reason);
+    }
+
     @NotNull
     public Optional<DynamicModule> createModule() {
         if (bindings.isEmpty() && staticInjections.isEmpty()) {
@@ -73,5 +80,10 @@ public abstract class Registerable {
         }
 
         return Optional.of(new DynamicModule(bindings, staticInjections.toArray(new Class<?>[]{})));
+    }
+
+    @Nullable
+    public BootstrapHaltException halt() {
+        return halt;
     }
 }

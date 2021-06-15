@@ -5,6 +5,7 @@ import com.google.inject.Injector;
 import com.google.inject.Key;
 import me.piggypiglet.referrals.api.Referrals;
 import me.piggypiglet.referrals.api.implementation.platform.registerables.PlatformReferralsImplementationRegisterable;
+import me.piggypiglet.referrals.bootstrap.exceptions.BootstrapHaltException;
 import me.piggypiglet.referrals.bootstrap.framework.Registerable;
 import me.piggypiglet.referrals.cloudflare.registerables.CloudflareRegisterable;
 import me.piggypiglet.referrals.cloudflare.zone.registerables.CloudflareZoneRegisterable;
@@ -91,6 +92,12 @@ public abstract class ReferralsBootstrap {
         for (final Class<? extends Registerable> registerableClass : registerables) {
             final Registerable registerable = injector.get().getInstance(registerableClass);
             registerable.run(injector.get());
+
+            final BootstrapHaltException halt = registerable.halt();
+
+            if (halt != null) {
+                throw halt;
+            }
 
             registerable.createModule()
                     .map(injector.get()::createChildInjector)

@@ -1,5 +1,6 @@
 package me.piggypiglet.referrals.bungee;
 
+import com.google.inject.Injector;
 import com.google.inject.Key;
 import me.piggypiglet.referrals.bootstrap.ReferralsBootstrap;
 import me.piggypiglet.referrals.bootstrap.framework.Registerable;

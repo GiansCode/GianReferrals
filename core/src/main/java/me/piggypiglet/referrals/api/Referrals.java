@@ -6,6 +6,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 
 // ------------------------------
 // Copyright (c) PiggyPiglet 2021
@@ -27,8 +28,10 @@ public interface Referrals {
      *
      * @param uuid Player UUID
      * @param name Player name
+     * @return Immutable version of the created record.
      */
-    void createRecord(@NotNull final UUID uuid, @NotNull final String name);
+    @NotNull
+    CompletableFuture<ImmutableRecord> createRecord(@NotNull final UUID uuid, @NotNull final String name);
 
     /**
      * Deletes the record corresponding to this player from the database

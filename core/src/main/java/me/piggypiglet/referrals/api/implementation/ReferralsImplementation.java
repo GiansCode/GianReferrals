@@ -17,6 +17,7 @@ import org.jetbrains.annotations.NotNull;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 
@@ -45,9 +46,11 @@ public final class ReferralsImplementation implements Referrals {
         this.platformReferrals = platformReferrals;
     }
 
+    @NotNull
     @Override
-    public void createRecord(final @NotNull UUID uuid, final @NotNull String name) {
+    public CompletableFuture<ImmutableRecord> createRecord(final @NotNull UUID uuid, final @NotNull String name) {
         final String lowerName = name.toLowerCase();
+        final CompletableFuture<ImmutableRecord> result = new CompletableFuture<>();
 
         task.async(() -> {
             final String cloudflareIdentifier = cloudflareManager.addRecord(lowerName);
@@ -64,7 +67,11 @@ public final class ReferralsImplementation implements Referrals {
 
             final ImmutableRecord immutableRecord = makeImmutable(record);
             task.sync(() -> platformReferrals.fire(PlatformEvent.RECORD_CREATE, immutableRecord, immutableRecord));
+
+            result.complete(immutableRecord);
         });
+
+        return result;
     }
 
     @Override
