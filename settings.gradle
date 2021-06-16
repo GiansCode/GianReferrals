@@ -4,6 +4,7 @@ include(
         "core",
         "bukkit",
         "bungee",
+        "papi",
         ":sample:bukkit-plugin",
         ":sample:bungee-plugin"
 )
