@@ -79,7 +79,7 @@ public final class ReferralsImplementation implements Referrals {
     public CompletableFuture<Void> deleteRecord(final @NotNull UUID uuid) {
         final CompletableFuture<Void> result = new CompletableFuture<>();
 
-        task.sync(() -> findRecord(uuid).ifPresent(record -> {
+        task.sync(() -> findRecord(uuid).ifPresentOrElse(record -> {
             records.remove(record);
 
             final ImmutableRecord immutableRecord = makeImmutable(record);
@@ -90,7 +90,7 @@ public final class ReferralsImplementation implements Referrals {
                 database.delete(record);
                 result.complete(null);
             });
-        }));
+        }, () -> result.completeExceptionally(new UnsupportedOperationException("This user does not have a record."))));
 
         return result;
     }
@@ -119,7 +119,7 @@ public final class ReferralsImplementation implements Referrals {
 
     private void setReferrals(@NotNull final UUID uuid, @NotNull final Function<Record, Integer> referrals,
                               @NotNull final PlatformEvent event) {
-        task.sync(() -> findRecord(uuid).ifPresent(record -> {
+        findRecord(uuid).ifPresent(record -> {
             final ImmutableRecord original = makeImmutable(record);
             record.joins(referrals.apply(record));
 
@@ -128,8 +128,8 @@ public final class ReferralsImplementation implements Referrals {
             }
 
             task.async(() -> database.save(record));
-            platformReferrals.fire(event, original, makeImmutable(record));
-        }));
+            task.sync(() -> platformReferrals.fire(event, original, makeImmutable(record)));
+        });
     }
 
     @NotNull

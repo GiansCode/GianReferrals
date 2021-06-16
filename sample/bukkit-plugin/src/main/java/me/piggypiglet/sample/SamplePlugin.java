@@ -32,8 +32,6 @@ public final class SamplePlugin extends JavaPlugin {
         }
     }
 
-    private Referrals api;
-
     @Override
     public void onEnable() {
         final Config config = Config.builder()
@@ -57,17 +55,9 @@ public final class SamplePlugin extends JavaPlugin {
                         .expiryMinutes(/*TimeUnit.DAYS.toMinutes(30)*/1)
                         .build())
                 .build();
-        api = ReferralsBootstrap.initialize(config, this);
+        final Referrals api = ReferralsBootstrap.initialize(config, this);
 
-        getCommand("test").setExecutor(this);
-    }
-
-    @Override
-    public boolean onCommand(@NotNull final CommandSender sender, @NotNull final Command command,
-                             @NotNull final String label, @NotNull final String[] args) {
-        final Player player = (Player) sender;
-        api.createRecord(player.getUniqueId(), player.getName());
-
-        return true;
+        getCommand("ref").setExecutor(new TestCommand(api));
+        getServer().getPluginManager().registerEvents(new TestListener(getLogger()), this);
     }
 }

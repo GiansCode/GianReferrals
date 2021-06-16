@@ -1,16 +1,14 @@
 package me.piggypiglet.sample;
 
 import me.piggypiglet.referrals.api.Referrals;
-import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.chat.TextComponent;
-import net.md_5.bungee.api.connection.ProxiedPlayer;
-import net.md_5.bungee.api.plugin.Command;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 import java.time.Instant;
-import java.time.temporal.ChronoField;
-import java.time.temporal.ChronoUnit;
-import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
@@ -19,22 +17,21 @@ import java.util.stream.Collectors;
 // Copyright (c) PiggyPiglet 2021
 // https://www.piggypiglet.me
 // ------------------------------
-public final class TestCommand extends Command {
+public final class TestCommand implements CommandExecutor {
     private final Referrals api;
 
     public TestCommand(@NotNull final Referrals api) {
-        super("gref");
         this.api = api;
     }
 
     @Override
-    public void execute(final CommandSender sender, final String[] args) {
+    public boolean onCommand(final CommandSender sender, final Command command, final String label, final String[] args) {
         if (args.length < 1) {
             sendMessage(sender, "learn how to use this command noob");
-            return;
+            return true;
         }
 
-        if (sender instanceof ProxiedPlayer player) {
+        if (sender instanceof Player player) {
             final UUID uuid = player.getUniqueId();
 
             switch (args[0].toLowerCase()) {
@@ -75,7 +72,7 @@ public final class TestCommand extends Command {
                 case "set" -> {
                     if (args.length < 2) {
                         sendMessage(sender, "Sorry bud, you need to also provide a value.");
-                        return;
+                        return true;
                     }
 
                     final int value;
@@ -84,7 +81,7 @@ public final class TestCommand extends Command {
                         value = Integer.parseInt(args[1]);
                     } catch (Exception exception) {
                         sendMessage(sender, "%s isn't a valid number... What you trying to do boi", args[1]);
-                        return;
+                        return true;
                     }
 
                     final int joins = api.getTotalReferrals(uuid);
@@ -102,10 +99,12 @@ public final class TestCommand extends Command {
                 }
             }
         }
+
+        return true;
     }
 
     private static void sendMessage(@NotNull final CommandSender sender, @NotNull final String message,
                                     @NotNull final Object... variables) {
-        sender.sendMessage(TextComponent.fromLegacyText(String.format(message, variables)));
+        sender.sendMessage(String.format(message, variables));
     }
 }

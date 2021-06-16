@@ -54,6 +54,7 @@ public final class SamplePlugin extends Plugin {
                 .build();
         final Referrals api = ReferralsBootstrap.initialize(config, this);
 
+        getProxy().getPluginManager().registerListener(this, new TestListener(getLogger()));
         getProxy().getPluginManager().registerCommand(this, new TestCommand(api));
     }
 }
