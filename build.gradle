@@ -25,4 +25,11 @@ allprojects {
     dependencies {
         compileOnly "org.jetbrains:annotations:21.0.1"
     }
+
+    javadoc.options.addStringOption("Xdoclint:none", "-quiet")
+
+    java {
+        withSourcesJar()
+        withJavadocJar()
+    }
 }

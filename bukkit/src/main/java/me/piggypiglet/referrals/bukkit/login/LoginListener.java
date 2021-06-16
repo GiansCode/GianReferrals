@@ -45,9 +45,9 @@ public final class LoginListener implements Listener {
             if (record.record().equalsIgnoreCase(host)) {
                 final UUID ownerUuid = record.uuid();
 
-//                if (ownerUuid.equals(event.getPlayer().getUniqueId())) {
-//                    return;
-//                }
+                if (ownerUuid.equals(event.getPlayer().getUniqueId())) {
+                    return;
+                }
 
                 api.incrementReferral(ownerUuid);
                 return;

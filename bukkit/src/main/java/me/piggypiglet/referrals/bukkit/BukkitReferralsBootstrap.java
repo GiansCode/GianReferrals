@@ -1,12 +1,10 @@
 package me.piggypiglet.referrals.bukkit;
 
-import com.google.inject.Injector;
 import com.google.inject.Key;
 import me.piggypiglet.referrals.bootstrap.ReferralsBootstrap;
 import me.piggypiglet.referrals.bootstrap.framework.Registerable;
 import me.piggypiglet.referrals.bukkit.api.registerables.ApiServiceRegisterable;
 import me.piggypiglet.referrals.bukkit.login.registerables.EventListenerRegisterable;
-import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 

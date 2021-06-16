@@ -13,6 +13,7 @@ import org.jetbrains.annotations.NotNull;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.util.concurrent.TimeUnit;
 
 // ------------------------------
 // Copyright (c) PiggyPiglet 2021
@@ -49,7 +50,7 @@ public final class SamplePlugin extends Plugin {
                         .expire(true)
                         .policy(ExpirationPolicy.ACCESSED)
                         .expiryCheckPeriodMinutes(1)
-                        .expiryMinutes(/*TimeUnit.DAYS.toMinutes(30)*/1)
+                        .expiryMinutes(TimeUnit.DAYS.toMinutes(30))
                         .build())
                 .build();
         final Referrals api = ReferralsBootstrap.initialize(config, this);
