@@ -39,6 +39,14 @@ public interface Referrals {
     CompletableFuture<Void> deleteRecord(@NotNull final UUID uuid);
 
     /**
+     * Check if a player has a record.
+     *
+     * @param uuid Player UUID
+     * @return Whether player has record
+     */
+    boolean hasRecord(@NotNull final UUID uuid);
+
+    /**
      * Get the total referrals a player has made. Will return -1 if the
      * player doesn't have a referral record.
      *

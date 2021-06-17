@@ -1,6 +1,7 @@
 package me.piggypiglet.referrals.bukkit;
 
 import com.google.inject.Key;
+import me.piggypiglet.referrals.api.ImmutableRecord;
 import me.piggypiglet.referrals.bootstrap.ReferralsBootstrap;
 import me.piggypiglet.referrals.bootstrap.framework.Registerable;
 import me.piggypiglet.referrals.bukkit.api.registerables.ApiServiceRegisterable;

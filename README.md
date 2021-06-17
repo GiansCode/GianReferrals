@@ -45,6 +45,35 @@ final Config config = Config.builder()
                         .build())
                 .build();
 ```
+It's extremely important that you relocate the referrals API and all of its
+dependencies. The following lists are packages which need to be relocated
+under your own package (e.g. me.piggypiglet.sample.dependencies). Common
+needs to be relocated on both bukkit & bungee, then the platform lists
+contain dependencies which only need to be relocated on specific platforms.<br/>
+**Common:**
+- co.aikar.idb
+- com.google.inject
+- com.mysql
+- com.zaxxer.hikari
+- eu.roboflax.cloudflare
+- io.joshworks.restclient
+- javax.inject
+- org.aopalliance
+- org.apache.commons.codec 
+- org.apache.commons.logging
+- org.apache.http
+- org.json
+- org.slf4j
+- google
+- com.google.protobuf
+> Note If you use the referrals api in multiple plugins on the same server,
+> you may also need to relocate it.
+
+**Bukkit:**
+- org.apache.commons.lang3
+
+See the sample project(s) for an example.
+
 Methods are named relatively concisely and specific to their function,
 but there may be a degree of ambiguity, especially with the cloudflare
 methods. Please check the javadoc of each method before supplying a value
@@ -61,12 +90,12 @@ final Referrals api = ReferralsBootstrap.initialize(config, this);
 ### API
 The Referrals instance you got above is what you need to keep. You can pass
 this around via dependency injection, or make a dreaded singleton instance
-yourself. Additionally on bukkit the instance is passed to the service manager,
+yourself. Additionally, on bukkit the instance is passed to the service manager,
 and the papi expansion need access. This was merely added for PAPI though,
-it may change in the future so I would not recommend relying on it.
+it may change in the future, so I would not recommend relying on it.
 
-The API is well documented with javadocs, and the method names are relatively
-self descriptive, there isn't much to cover here.
+The Referrals class is well documented with javadocs, and the method names are
+relatively self-descriptive, there isn't much to cover here.
 
 Oh there's also events though, 5 of them in fact.
 - RecordCreateEvent
@@ -82,3 +111,5 @@ Only 2 placeholders, %referrals_joins% & %referrals_top%. Joins returns the
 number of joins for the user parsing the placeholder, and top returns the top
 users in the format `uuid - joins\n`.
 
+To build the PAPI expansion, run
+`./gradlew shadowJar`, the jar will be in `sample/servers/bukkit/plugins/PlaceholderAPI/expansions`

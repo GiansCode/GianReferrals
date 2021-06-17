@@ -3,10 +3,13 @@ dependencies {
         exclude group: "com.google.guava", module: "guava"
     }
 
-    implementation "com.zaxxer:HikariCP:3.4.5"
+    implementation "com.zaxxer:HikariCP:4.0.3"
     implementation "co.aikar:idb-core:1.0.0-SNAPSHOT"
-    implementation "mysql:mysql-connector-java:8.0.22"
-    implementation "com.github.robinbraemer:cloudflareapi:1.4.0"
+    implementation "mysql:mysql-connector-java:8.0.25"
+    implementation("com.github.robinbraemer:cloudflareapi:1.4.0") {
+        exclude group: "com.google.guava", module: "guava"
+        exclude group: "com.google.code.gson", module: "gson"
+    }
 
     compileOnly "com.google.code.gson:gson:2.8.7"
 }

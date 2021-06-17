@@ -11,4 +11,20 @@ dependencies {
 
 shadowJar {
     destinationDirectory = file("../servers/bungee/plugins")
+
+    relocate "co.aikar.idb", "me.piggypiglet.sample.deps.co.aikar.idb"
+    relocate "com.google.inject", "me.piggypiglet.sample.deps.com.google.inject"
+    relocate "com.mysql", "me.piggypiglet.sample.deps.com.mysql"
+    relocate "com.zaxxer.hikari", "me.piggypiglet.sample.deps.com.zaxxer.hikari"
+    relocate "eu.roboflax.cloudflare", "me.piggypiglet.sample.deps.eu.roboflax.cloudflare"
+    relocate "io.joshworks.restclient", "me.piggypiglet.sample.deps.io.joshworks.restclient"
+    relocate "javax.inject", "me.piggypiglet.sample.deps.javax.inject"
+    relocate "org.aopalliance", "me.piggypiglet.sample.deps.org.aopalliance"
+    relocate "org.apache.commons.codec", "me.piggypiglet.sample.deps.org.apache.commons.codec"
+    relocate "org.apache.commons.logging", "me.piggypiglet.sample.deps.org.apache.commons.logging"
+    relocate "org.apache.http", "me.piggypiglet.sample.deps.org.apache.http"
+    relocate "org.json", "me.piggypiglet.sample.deps.org.json"
+    relocate "org.slf4j", "me.piggypiglet.sample.deps.org.slf4j"
+    relocate "google", "me.piggypiglet.sample.deps.google"
+    relocate "com.google.protobuf", "me.piggypiglet.sample.deps.com.google.protobuf"
 }

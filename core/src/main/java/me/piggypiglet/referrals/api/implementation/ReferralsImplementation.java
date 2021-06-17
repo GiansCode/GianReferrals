@@ -96,6 +96,11 @@ public final class ReferralsImplementation implements Referrals {
     }
 
     @Override
+    public boolean hasRecord(final @NotNull UUID uuid) {
+        return findRecord(uuid).isPresent();
+    }
+
+    @Override
     public int getTotalReferrals(final @NotNull UUID uuid) {
         return findRecord(uuid)
                 .map(Record::joins)
