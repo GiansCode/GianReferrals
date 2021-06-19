@@ -1,8 +1,11 @@
 package me.piggypiglet.referrals.mysql.tables;
 
+import me.piggypiglet.referrals.mysql.orm.annotations.DataStructure;
 import me.piggypiglet.referrals.mysql.orm.annotations.Identifier;
 import me.piggypiglet.referrals.mysql.orm.annotations.Length;
 import me.piggypiglet.referrals.mysql.orm.annotations.Table;
+import me.piggypiglet.referrals.mysql.orm.structure.objects.SqlDataStructures;
+import me.piggypiglet.referrals.mysql.tables.framework.RawObject;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -13,8 +16,8 @@ import java.util.Objects;
 // https://www.piggypiglet.me
 // ------------------------------
 @Table("records")
-public final class RawRecord {
-    @Identifier @Length(36)
+public final class RawRecord implements RawObject {
+    @Identifier @Length(36) @DataStructure(SqlDataStructures.VARCHAR)
     private final String uuid;
     private final String record;
     private final String cloudflareIdentifier;
@@ -55,6 +58,7 @@ public final class RawRecord {
         return joins;
     }
 
+    @Override
     public boolean actualEquals(@Nullable final Object object) {
         if (this == object) {
             return true;

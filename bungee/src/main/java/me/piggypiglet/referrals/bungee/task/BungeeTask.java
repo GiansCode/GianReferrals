@@ -33,7 +33,7 @@ public final class BungeeTask implements Task {
 
     @Override
     public void async(final @NotNull Runnable task, final long delay, final long period) {
-        scheduler.schedule(main, task, delay, period, TimeUnit.MINUTES);
+        scheduler.schedule(main, task, delay * 50, period * 50, TimeUnit.MILLISECONDS);
     }
 
     @Override

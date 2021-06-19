@@ -13,9 +13,8 @@ import java.util.stream.Collectors;
 // Copyright (c) PiggyPiglet 2021
 // https://www.piggypiglet.me
 // ------------------------------
-public final class InsertQuery implements ModificationQuery {
+public final class InsertQuery {
     @NotNull
-    @Override
     @Language("SQL")
     public String generate(final @NotNull TableStructure table, final @NotNull Map<String, Object> data) {
         final StringBuilder builder = new StringBuilder();

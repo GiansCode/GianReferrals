@@ -13,6 +13,7 @@ import java.util.Set;
 // ------------------------------
 public enum SqlDataStructures {
     TEXT(767, String.class),
+    VARCHAR(767), // this can only be used via manual selection
     // -1 as we never use int as a identifier in the code
     INT(-1, int.class);
 

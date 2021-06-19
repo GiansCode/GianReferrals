@@ -3,6 +3,7 @@ package me.piggypiglet.referrals.api;
 import com.google.inject.ImplementedBy;
 import me.piggypiglet.referrals.api.implementation.ReferralsImplementation;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
 import java.util.UUID;
@@ -47,6 +48,16 @@ public interface Referrals {
     boolean hasRecord(@NotNull final UUID uuid);
 
     /**
+     * Check if a player has joined a record. Returns false if record doesn't
+     * exist.
+     *
+     * @param recordUuid Owner uuid of record
+     * @param playerUuid Player to check
+     * @return Whether player has joined record
+     */
+    boolean hasJoinedRecord(@NotNull final UUID recordUuid, @NotNull final UUID playerUuid);
+
+    /**
      * Get the total referrals a player has made. Will return -1 if the
      * player doesn't have a referral record.
      *
@@ -58,16 +69,18 @@ public interface Referrals {
     /**
      * Increment a player's referral count by 1 (i.e. referrals = current referrals + 1).
      *
-     * @param uuid Player UUID
+     * @param owner Player UUID
+     * @param joiner Optional joiner UUID (can pass null)
      */
-    void incrementReferral(@NotNull final UUID uuid);
+    void incrementReferral(@NotNull final UUID owner, @Nullable final UUID joiner);
 
     /**
      * Decrement a player's referral count by 1 (i.e. referrals = current referrals - 1).
      *
-     * @param uuid Player UUID
+     * @param player Player UUID
+     * @param joiner Optional joiner UUID (can pass null)
      */
-    void decrementReferral(@NotNull final UUID uuid);
+    void decrementReferral(@NotNull final UUID player, @Nullable final UUID joiner);
 
     /**
      * Set a player's referral count to an explicit number.

@@ -4,6 +4,7 @@ import me.piggypiglet.referrals.config.exceptions.InvalidConfigurationException;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
@@ -16,8 +17,8 @@ import java.util.stream.Collectors;
  * Please construct an instance of ExpiryOptions via the ExpiryOptions builder,
  * which is retrieved via {@link #builder}.
  */
-public record ExpiryOptions(boolean expire, ExpirationPolicy policy, long expiryCheckPeriodMinutes,
-                            long expiryMinutes) {
+public record ExpiryOptions(boolean expire, ExpirationPolicy policy, long expiryCheckPeriodTicks,
+                            long expiryTicks) {
     /**
      * Constructs a new builder instance. Make sure to fill out every method,
      * otherwise the API will not function.
@@ -32,17 +33,18 @@ public record ExpiryOptions(boolean expire, ExpirationPolicy policy, long expiry
     public static class Builder {
         private boolean expire;
         private ExpirationPolicy policy;
-        private long expiryCheckPeriodMinutes;
-        private long expiryMinutes;
+        private long expiryCheckPeriodTicks;
+        private long expiryTicks;
 
         private final Map<String, Supplier<Object>> fields = Map.of(
                 "expire", () -> expire,
                 "policy", () -> policy,
-                "expiryCheckPeriodMinutes", () -> expiryCheckPeriodMinutes,
-                "expiryMinutes", () -> expiryMinutes
+                "expiryCheckPeriodTicks", () -> expiryCheckPeriodTicks,
+                "expiryTicks", () -> expiryTicks
         );
 
-        private Builder() { }
+        private Builder() {
+        }
 
         /**
          * Set whether to actually expire records or not.
@@ -71,36 +73,37 @@ public record ExpiryOptions(boolean expire, ExpirationPolicy policy, long expiry
         }
 
         /**
-         * How frequently (in minutes) to compare record expiration timestamps to the current
+         * How frequently to compare record expiration timestamps to the current
          * timestamp, to see whether they should be deleted or not.
          *
-         * @param value Checking period in minutes
+         * @param value Checking period
+         * @param unit  Unit of time
          * @return Builder instance
          */
         @NotNull
-        public Builder expiryCheckPeriodMinutes(final long value) {
-            expiryCheckPeriodMinutes = value;
+        public Builder expiryCheckPeriod(final long value, @NotNull final TimeUnit unit) {
+            expiryCheckPeriodTicks = unit.toSeconds(value) * 20;
             return this;
         }
 
         /**
-         * How long it should take for a record to expire (depending on the expiration policy) in
-         * minutes.
+         * How long it should take for a record to expire (depending on the expiration policy).
          *
-         * @param value Expiration time in minutes
+         * @param value Expiration time
+         * @param unit  Unit of time
          * @return Builder instance
          */
         @NotNull
-        public Builder expiryMinutes(final long value) {
-            expiryMinutes = value;
+        public Builder expiry(final long value, @NotNull final TimeUnit unit) {
+            expiryTicks = unit.toSeconds(value) * 20;
             return this;
         }
 
         /**
          * Build an instance of ExpiryOptions with the provided values.
          *
-         * @throws InvalidConfigurationException when one or more values aren't set.
          * @return Populated ExpiryOptions instance
+         * @throws InvalidConfigurationException when one or more values aren't set.
          */
         @NotNull
         public ExpiryOptions build() {
@@ -113,7 +116,7 @@ public record ExpiryOptions(boolean expire, ExpirationPolicy policy, long expiry
                 throw new InvalidConfigurationException("The following fields in ExpiryOptions weren't set: " + nullFields);
             }
 
-            return new ExpiryOptions(expire, policy, expiryCheckPeriodMinutes, expiryMinutes);
+            return new ExpiryOptions(expire, policy, expiryCheckPeriodTicks, expiryTicks);
         }
     }
 }

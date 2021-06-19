@@ -1,6 +1,7 @@
 package me.piggypiglet.referrals.mysql.orm.structure.factory;
 
 import com.google.gson.FieldNamingPolicy;
+import me.piggypiglet.referrals.mysql.orm.annotations.DataStructure;
 import me.piggypiglet.referrals.mysql.orm.annotations.Length;
 import me.piggypiglet.referrals.mysql.orm.structure.TableColumn;
 import me.piggypiglet.referrals.mysql.orm.structure.objects.SqlDataStructures;
@@ -20,8 +21,9 @@ public final class TableColumnFactory {
 
     @NotNull
     static TableColumn from(@NotNull final Field field) {
-        final SqlDataStructures dataStructure = SqlDataStructures.fromType(field.getType())
-                .orElse(null);
+        final SqlDataStructures dataStructure = Optional.ofNullable(field.getAnnotation(DataStructure.class))
+                .map(DataStructure::value)
+                .orElse(SqlDataStructures.fromType(field.getType()).orElse(null));
 
         if (dataStructure == null) {
             throw new AssertionError(field.getType() + " is not an implemented sql data structure.");

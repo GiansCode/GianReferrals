@@ -78,7 +78,7 @@ public final class QueryRunner {
         tryAndCatch(() -> database.executeUpdate(query), error);
     }
 
-    public void delete(@NotNull final TableStructure table, @NotNull final Map<String, Object> queries) {
+    public void delete(@NotNull final TableStructure table, @NotNull final Set<Map<String, Object>> queries) {
         @Language("SQL") final String query = delete.generate(table, queries);
         final String error = "Something went wrong when deleting from " + table.name() + " with the following query:\n" + query;
 

@@ -14,10 +14,7 @@ import me.piggypiglet.referrals.scanning.framework.Scanner;
 import me.piggypiglet.referrals.scanning.rules.Rules;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 // ------------------------------
@@ -47,6 +44,6 @@ public final class TableObjectsRegisterable extends Registerable {
                 .collect(Collectors.toMap(table -> table, table -> new HashSet<>()));
 
         addBinding(new TypeLiteral<Map<Class<?>, Set<Object>>>() {}, TABLES, tables);
-        tables.forEach((clazz, set) -> addBinding((Key<Set<?>>) Key.get(Types.setOf(clazz)), set));
+        tables.forEach((clazz, set) -> addBinding((Key<Set<?>>) Key.get(Types.setOf(clazz)), Collections.synchronizedSet(set)));
     }
 }

@@ -7,15 +7,12 @@ import me.piggypiglet.referrals.config.Config;
 import me.piggypiglet.referrals.config.MysqlDetails;
 import me.piggypiglet.referrals.config.expire.ExpirationPolicy;
 import me.piggypiglet.referrals.config.expire.ExpiryOptions;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.util.concurrent.TimeUnit;
 
 // ------------------------------
 // Copyright (c) PiggyPiglet 2021
@@ -51,8 +48,8 @@ public final class SamplePlugin extends JavaPlugin {
                 .expiry(ExpiryOptions.builder()
                         .expire(true)
                         .policy(ExpirationPolicy.ACCESSED)
-                        .expiryCheckPeriodMinutes(1)
-                        .expiryMinutes(/*TimeUnit.DAYS.toMinutes(30)*/1)
+                        .expiryCheckPeriod(10, TimeUnit.SECONDS)
+                        .expiry(1, TimeUnit.MINUTES)
                         .build())
                 .build();
         final Referrals api = ReferralsBootstrap.initialize(config, this);

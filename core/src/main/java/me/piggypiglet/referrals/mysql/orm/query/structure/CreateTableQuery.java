@@ -22,12 +22,18 @@ public final class CreateTableQuery implements StructureQuery {
                 .append(structure.name())
                 .append("` (");
 
-        structure.columns().forEach(column ->
-                builder.append("`")
-                        .append(column.name())
-                        .append("` ")
-                        .append(column.dataStructure())
-                        .append(" NOT NULL, "));
+        structure.columns().forEach(column -> {
+            builder.append("`")
+                    .append(column.name())
+                    .append("` ")
+                    .append(column.dataStructure());
+
+            if (structure.identifiers().contains(column)) {
+                builder.append('(').append(column.length()).append(')');
+            }
+
+            builder.append(" NOT NULL, ");
+        });
 
         final Set<TableColumn> identifiers = structure.identifiers();
 

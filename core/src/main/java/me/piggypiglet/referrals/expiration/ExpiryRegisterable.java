@@ -12,7 +12,6 @@ import org.jetbrains.annotations.NotNull;
 import java.time.Instant;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.concurrent.TimeUnit;
 
 // ------------------------------
 // Copyright (c) PiggyPiglet 2021
@@ -47,6 +46,6 @@ public final class ExpiryRegisterable extends Registerable {
                     api.deleteRecord(record.uuid());
                 }
             }
-        }, 0, expiry.expiryCheckPeriodMinutes());
+        }, 0, expiry.expiryCheckPeriodTicks());
     }
 }

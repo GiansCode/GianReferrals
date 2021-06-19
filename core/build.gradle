@@ -11,5 +11,6 @@ dependencies {
         exclude group: "com.google.code.gson", module: "gson"
     }
 
+    compileOnly "com.google.guava:guava:21.0"
     compileOnly "com.google.code.gson:gson:2.8.7"
 }

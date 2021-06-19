@@ -30,15 +30,11 @@ public final class BukkitTask implements Task {
 
     @Override
     public void async(final @NotNull Runnable task, final long delay, final long period) {
-        SCHEDULER.runTaskTimerAsynchronously(main, task, toTicks(delay), toTicks(period));
+        SCHEDULER.runTaskTimerAsynchronously(main, task, delay, period);
     }
 
     @Override
     public void sync(final @NotNull Runnable task) {
         SCHEDULER.runTask(main, task);
-    }
-
-    private static long toTicks(final long minutes) {
-        return TimeUnit.MINUTES.toSeconds(minutes) * 20;
     }
 }

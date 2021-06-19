@@ -7,6 +7,7 @@ import me.piggypiglet.referrals.mysql.dbo.framework.ModificationRequest;
 import me.piggypiglet.referrals.mysql.orm.TableManager;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Collections;
 import java.util.Map;
 
 // ------------------------------
@@ -29,9 +30,13 @@ public final class DatabaseObjects {
         final ModificationRequest modificationRequest = ((DatabaseObjectAdapter<T>) adapters.get(object.getClass())).applyToRaw(object);
 
         modificationRequest.modified().forEach(tableManager::save);
+
+        if (!modificationRequest.deleted().isEmpty()) {
+            tableManager.delete(modificationRequest.deleted());
+        }
     }
 
     public <T> void delete(@NotNull final T object) {
-        tableManager.delete(((DatabaseObjectAdapter<T>) adapters.get(object.getClass())).convertToRawObject(object));
+        tableManager.delete(Collections.singleton(((DatabaseObjectAdapter<T>) adapters.get(object.getClass())).convertToRawObject(object)));
     }
 }

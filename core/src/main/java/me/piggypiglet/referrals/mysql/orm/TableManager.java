@@ -15,6 +15,7 @@ import java.lang.reflect.Type;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 // ------------------------------
 // Copyright (c) PiggyPiglet 2021
@@ -57,8 +58,9 @@ public final class TableManager {
         queryRunner.insert(structures.get(object.getClass()), toMap(object));
     }
 
-    public void delete(@NotNull final Object object) {
-        queryRunner.delete(structures.get(object.getClass()), toMap(object));
+    public void delete(@NotNull final Set<Object> object) {
+        // iterator because all objects should be same class
+        queryRunner.delete(structures.get(object.iterator().next().getClass()), object.stream().map(TableManager::toMap).collect(Collectors.toSet()));
     }
 
     @NotNull

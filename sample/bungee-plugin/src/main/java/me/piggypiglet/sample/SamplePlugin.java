@@ -8,7 +8,6 @@ import me.piggypiglet.referrals.config.MysqlDetails;
 import me.piggypiglet.referrals.config.expire.ExpirationPolicy;
 import me.piggypiglet.referrals.config.expire.ExpiryOptions;
 import net.md_5.bungee.api.plugin.Plugin;
-import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -49,8 +48,8 @@ public final class SamplePlugin extends Plugin {
                 .expiry(ExpiryOptions.builder()
                         .expire(true)
                         .policy(ExpirationPolicy.ACCESSED)
-                        .expiryCheckPeriodMinutes(1)
-                        .expiryMinutes(TimeUnit.DAYS.toMinutes(30))
+                        .expiryCheckPeriod(10, TimeUnit.SECONDS)
+                        .expiry(1, TimeUnit.MINUTES)
                         .build())
                 .build();
         final Referrals api = ReferralsBootstrap.initialize(config, this);

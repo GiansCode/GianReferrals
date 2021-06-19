@@ -59,13 +59,13 @@ public final class TestCommand implements CommandExecutor {
 
                 case "increment" -> {
                     final int joins = api.getTotalReferrals(uuid);
-                    api.incrementReferral(uuid);
+                    api.incrementReferral(uuid, null);
                     sendMessage(sender, "What? %s join(s) not enough for you? You bloody cheater, fine, I'll add one. There, you now have %s join(s).", joins, api.getTotalReferrals(uuid));
                 }
 
                 case "decrement" -> {
                     final int joins = api.getTotalReferrals(uuid);
-                    api.decrementReferral(uuid);
+                    api.decrementReferral(uuid, null);
                     sendMessage(sender, "Uh, why? Most people would be happy with %s join(s), but sure ig, you now have %s join(s).", joins, api.getTotalReferrals(uuid));
                 }
 

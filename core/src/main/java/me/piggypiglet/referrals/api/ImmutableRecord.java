@@ -3,6 +3,7 @@ package me.piggypiglet.referrals.api;
 import org.jetbrains.annotations.NotNull;
 
 import java.time.Instant;
+import java.util.Set;
 import java.util.UUID;
 
 // ------------------------------
@@ -13,12 +14,13 @@ import java.util.UUID;
 /**
  * Immutable representation of the mutable {@link me.piggypiglet.referrals.mysql.record.Record}
  *
- * @param uuid Player UUID
- * @param record Record name in cloudflare (e.g. piggypiglet.p1g.pw)
+ * @param uuid          Player UUID
+ * @param record        Record name in cloudflare (e.g. piggypiglet.p1g.pw)
  * @param expiryInstant Instant when this record will expire. This may change if the joins increases,
  *                      this object will not be updated in that event (so don't store these!)
- * @param joins Current join count.
+ * @param joins         Current join count.
+ * @param joiners       Everyone who has joined this record.
  */
 public record ImmutableRecord(@NotNull UUID uuid, @NotNull String record, @NotNull Instant expiryInstant,
-                              int joins) {
+                              int joins, @NotNull Set<UUID> joiners) {
 }
