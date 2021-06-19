@@ -4,7 +4,7 @@
 ```groovy
 repositories {
     maven {
-        url = "https://repo.piggypiglet.me/repository/maven-releases/"
+        url = "https://repo.piggypiglet.me/releases"
     }
 }
 

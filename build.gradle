@@ -1,24 +1,26 @@
 plugins {
-    id 'java-library'
+    id "java-library"
+    id "maven-publish"
     id "com.github.johnrengelman.shadow" version "7.0.0"
 }
 
 allprojects {
     apply plugin: "java-library"
+    apply plugin: "maven-publish"
     apply plugin: "com.github.johnrengelman.shadow"
 
-    group 'me.piggypiglet'
-    version '1.0.0'
+    group "me.piggypiglet"
+    version "1.0.0"
 
     sourceCompatibility = JavaVersion.VERSION_16
 
     repositories {
         mavenCentral()
         maven {
-            url = 'https://repo.aikar.co/content/groups/aikar'
+            url = "https://repo.aikar.co/content/groups/aikar"
         }
         maven {
-            url = 'https://jitpack.io'
+            url = "https://jitpack.io"
         }
     }
 
@@ -26,10 +28,44 @@ allprojects {
         compileOnly "org.jetbrains:annotations:21.0.1"
     }
 
-    javadoc.options.addStringOption("Xdoclint:none", "-quiet")
+    javadoc {
+        options.addStringOption("Xdoclint:none", "-quiet")
+        options.addBooleanOption('html5', true)
+    }
 
     java {
         withSourcesJar()
         withJavadocJar()
+    }
+
+    publishing {
+        repositories {
+            maven {
+                url = "https://repo.piggypiglet.me/releases"
+
+                credentials {
+                    username = project.property("maven.username")
+                    password = project.property("maven.password")
+                }
+
+                authentication {
+                    basic(BasicAuthentication)
+                }
+            }
+        }
+
+        publications {
+            mavenJava(MavenPublication) {
+                from components.java
+
+                artifactId = "referrals-${project.name}"
+            }
+        }
+    }
+}
+
+task publishRelevantSubprojects {
+    [":core", ":bukkit", ":bungee"].each{
+        dependsOn project(it).publish
     }
 }

@@ -8,5 +8,7 @@ dependencies {
     api(project(":core")) {
         exclude group: "org.apache.commons", module: "commons-lang3"
     }
+    implementation "mysql:mysql-connector-java:8.0.25"
+
     compileOnly 'net.md-5:bungeecord-api:1.17-R0.1-SNAPSHOT'
 }

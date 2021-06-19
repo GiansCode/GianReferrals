@@ -2,10 +2,13 @@ repositories {
     maven {
         url = 'https://oss.sonatype.org/content/repositories/snapshots'
     }
+    maven {
+        url = 'https://repo.piggypiglet.me/releases'
+    }
 }
 
 dependencies {
-    implementation project(":bungee")
+    implementation "me.piggypiglet:referrals-bungee:1.0.0"
     compileOnly 'net.md-5:bungeecord-api:1.17-R0.1-SNAPSHOT'
 }
 
