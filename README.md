@@ -40,8 +40,8 @@ final Config config = Config.builder()
                 .expiry(ExpiryOptions.builder()
                         .expire(true)
                         .policy(ExpirationPolicy.ACCESSED)
-                        .expiryCheckPeriodMinutes(1)
-                        .expiryMinutes(TimeUnit.DAYS.toMinutes(30))
+                        .expiryCheckPeriod(1, TimeUnit.MINUTES)
+                        .expiry(30, TimeUnit.DAYS)
                         .build())
                 .build();
 ```
